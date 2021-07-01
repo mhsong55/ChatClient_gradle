@@ -10,9 +10,9 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ChatClient {
-    private final static String SERVER_HOST = "20.194.42.140";
-    private final static int SERVER_PORT = 20111;
-    private final static String NICKNAME = "mhsong";
+    private final static String SERVER_HOST = "*";
+    private final static int SERVER_PORT = 0;
+    private final static String NICKNAME = "*";
 
     private Socket mSocket;
     private String mName;
