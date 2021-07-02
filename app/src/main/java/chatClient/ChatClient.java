@@ -100,8 +100,8 @@ public class ChatClient {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-               in.close();
             }
+            in.close();
         }
     }
 }
