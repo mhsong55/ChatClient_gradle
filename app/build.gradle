@@ -9,6 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 repositories {
@@ -31,4 +32,11 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'chatClient.App'
+}
+
+shadowJar {
+    archiveBaseName.set('ChatClient')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    configurations = [project.configurations.compileClasspath]
 }
