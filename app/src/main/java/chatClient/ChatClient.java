@@ -7,6 +7,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class ChatClient {
@@ -72,15 +74,17 @@ public class ChatClient {
     class ClientWrite extends Thread {
 
         private DataOutputStream mOutputStream;
-        private TimeInfo timeInfo;
+
+
         public ClientWrite(String nickName) {
             try {
                 mName = nickName;
                 mOutputStream = new DataOutputStream(mSocket.getOutputStream());
                 mOutputStream.writeUTF(nickName);
                 mOutputStream.flush();
-                timeInfo = new TimeInfo();
-                System.out.println("id : " + nickName + " connected, DateTime = " + timeInfo.getTimeInfo());
+
+                System.out.println("id : " + nickName + " connected, DateTime = "
+                        + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("writeUTF IOException");
@@ -96,7 +100,7 @@ public class ChatClient {
                 // Json구성
                 String msg = in.nextLine();
                 long time = System.currentTimeMillis();
-                MsgInfo msgInfo = new MsgInfo(mName, msg, timeInfo.getTimeInfo());
+                MsgInfo msgInfo = new MsgInfo(mName, msg, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
                 Gson gson = new Gson();
 //					String json = "{\"nickName\":\"" + nickName + "\",\"msg\":\"" + msg + "\",\"time\":\"" + time + "\"}";
@@ -115,15 +119,13 @@ public class ChatClient {
     class ClientKeepAlive extends Thread {
 
         private DataOutputStream mOutputStream;
-        private TimeInfo timeInfo;
 
         public ClientKeepAlive() {
             try {
                 mOutputStream = new DataOutputStream(mSocket.getOutputStream());
-                timeInfo = new TimeInfo();
-                mOutputStream.writeUTF("PING");
+                mOutputStream.writeUTF("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 mOutputStream.flush();
-                System.out.println("PING, DateTime = " + timeInfo.getTimeInfo());
+                System.out.println("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("writeUTF IOException");
@@ -141,9 +143,9 @@ public class ChatClient {
                     e.printStackTrace();
                 }
                 try {
-                    mOutputStream.writeUTF("PING, DateTime = " + timeInfo.getTimeInfo());
+                    mOutputStream.writeUTF("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                     mOutputStream.flush();
-                    System.out.println("PING");
+                    System.out.println("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
