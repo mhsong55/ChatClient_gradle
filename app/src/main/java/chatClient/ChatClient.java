@@ -27,6 +27,9 @@ public class ChatClient {
             clientWrite.start();
             ClientRead clientRead = new ClientRead();
             clientRead.start();
+            ClientKeepAlive clientKeepAlive = new ClientKeepAlive();
+            clientKeepAlive.start();
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -69,14 +72,15 @@ public class ChatClient {
     class ClientWrite extends Thread {
 
         private DataOutputStream mOutputStream;
-
+        private TimeInfo timeInfo;
         public ClientWrite(String nickName) {
             try {
                 mName = nickName;
                 mOutputStream = new DataOutputStream(mSocket.getOutputStream());
                 mOutputStream.writeUTF(nickName);
                 mOutputStream.flush();
-                System.out.println("id : " + nickName + " connected");
+                timeInfo = new TimeInfo();
+                System.out.println("id : " + nickName + " connected, DateTime = " + timeInfo.getTimeInfo());
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("writeUTF IOException");
@@ -92,7 +96,7 @@ public class ChatClient {
                 // Json구성
                 String msg = in.nextLine();
                 long time = System.currentTimeMillis();
-                MsgInfo msgInfo = new MsgInfo(mName, msg, time);
+                MsgInfo msgInfo = new MsgInfo(mName, msg, timeInfo.getTimeInfo());
 
                 Gson gson = new Gson();
 //					String json = "{\"nickName\":\"" + nickName + "\",\"msg\":\"" + msg + "\",\"time\":\"" + time + "\"}";
@@ -100,6 +104,46 @@ public class ChatClient {
                     mOutputStream.writeUTF(gson.toJson(msgInfo));
 //                    System.out.println(gson.toJson(msgInfo));
                     mOutputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // in.close();
+            }
+        }
+    }
+
+    class ClientKeepAlive extends Thread {
+
+        private DataOutputStream mOutputStream;
+        private TimeInfo timeInfo;
+
+        public ClientKeepAlive() {
+            try {
+                mOutputStream = new DataOutputStream(mSocket.getOutputStream());
+                timeInfo = new TimeInfo();
+                mOutputStream.writeUTF("PING");
+                mOutputStream.flush();
+                System.out.println("PING, DateTime = " + timeInfo.getTimeInfo());
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("writeUTF IOException");
+            }
+        }
+
+        @Override
+        public void run() {
+
+            while (true) {
+
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mOutputStream.writeUTF("PING, DateTime = " + timeInfo.getTimeInfo());
+                    mOutputStream.flush();
+                    System.out.println("PING");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -3,9 +3,9 @@ package chatClient;
 public class MsgInfo {
 	private String nickName;
 	private String message;
-	private long time;
+	private String time;
 	
-	public MsgInfo(String nickName, String message, long time) {
+	public MsgInfo(String nickName, String message, String time) {
 		this.nickName = nickName;
 		this.message = message;
 		this.time = time;
@@ -13,6 +13,6 @@ public class MsgInfo {
 
 	@Override
 	public String toString() {
-		return "MsgInfo [nickName=" + nickName + ", message=" + message + ", time=" + time + "]";
+		return "MsgInfo [nickName=" + nickName + ", message=" + message + ", DateTime=" + time + "]";
 	}
 }
