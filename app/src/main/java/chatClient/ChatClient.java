@@ -29,6 +29,7 @@ public class ChatClient {
             clientWrite.start();
             ClientRead clientRead = new ClientRead();
             clientRead.start();
+            // KeepAlive Settings
             ClientKeepAlive clientKeepAlive = new ClientKeepAlive();
             clientKeepAlive.start();
 
@@ -83,8 +84,8 @@ public class ChatClient {
                 mOutputStream.writeUTF(nickName);
                 mOutputStream.flush();
 
-                System.out.println("id : " + nickName + " connected, DateTime = "
-                        + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                System.out.println("id : " + nickName + " connected, DateTime = " + LocalDateTime.now()
+                        .plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " KST");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("writeUTF IOException");
@@ -97,10 +98,11 @@ public class ChatClient {
 
             while (true) {
                 System.out.print("message : ");
-                // Json구성
+
                 String msg = in.nextLine();
                 long time = System.currentTimeMillis();
-                MsgInfo msgInfo = new MsgInfo(mName, msg, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                MsgInfo msgInfo = new MsgInfo(mName, msg, LocalDateTime.now().plusHours(9)
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " KST");
 
                 Gson gson = new Gson();
 //					String json = "{\"nickName\":\"" + nickName + "\",\"msg\":\"" + msg + "\",\"time\":\"" + time + "\"}";
@@ -123,9 +125,11 @@ public class ChatClient {
         public ClientKeepAlive() {
             try {
                 mOutputStream = new DataOutputStream(mSocket.getOutputStream());
-                mOutputStream.writeUTF("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                mOutputStream.writeUTF("PING, DateTime = " + LocalDateTime.now().plusHours(9)
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " KST");
                 mOutputStream.flush();
-                System.out.println("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                System.out.println("PING, DateTime = " + LocalDateTime.now().plusHours(9)
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " KST");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("writeUTF IOException");
@@ -143,9 +147,11 @@ public class ChatClient {
                     e.printStackTrace();
                 }
                 try {
-                    mOutputStream.writeUTF("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    mOutputStream.writeUTF("PING, DateTime = " + LocalDateTime.now().plusHours(9)
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " KST");
                     mOutputStream.flush();
-                    System.out.println("PING, DateTime = " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    System.out.println("PING, DateTime = " + LocalDateTime.now().plusHours(9)
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " KST");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
