@@ -10,9 +10,9 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ChatClient {
-    private final static String SERVER_HOST = "*";
-    private final static int SERVER_PORT = 0;
-    private final static String NICKNAME = "*";
+    private final static String SERVER_HOST = "localhost";
+    private final static int SERVER_PORT = 20111;
+    private final static String NICKNAME = "ChatClient";
 
     private Socket mSocket;
     private String mName;
@@ -20,6 +20,9 @@ public class ChatClient {
     public void connect() {
         try {
             mSocket = new Socket(SERVER_HOST, SERVER_PORT);
+            mSocket.setKeepAlive(true);
+            System.out.println("KeepAlive = " + mSocket.getKeepAlive());
+
             ClientWrite clientWrite = new ClientWrite(NICKNAME);
             clientWrite.start();
             ClientRead clientRead = new ClientRead();
@@ -100,8 +103,8 @@ public class ChatClient {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                // in.close();
             }
-            in.close();
         }
     }
 }
