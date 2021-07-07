@@ -22,16 +22,16 @@ public class ChatClient {
     public void connect() {
         try {
             mSocket = new Socket(SERVER_HOST, SERVER_PORT);
-            mSocket.setKeepAlive(true);
-            System.out.println("KeepAlive = " + mSocket.getKeepAlive());
+            // mSocket.setKeepAlive(true);
+            // System.out.println("KeepAlive = " + mSocket.getKeepAlive());
 
             ClientWrite clientWrite = new ClientWrite(NICKNAME);
             clientWrite.start();
             ClientRead clientRead = new ClientRead();
             clientRead.start();
             // KeepAlive Settings
-            ClientKeepAlive clientKeepAlive = new ClientKeepAlive();
-            clientKeepAlive.start();
+            // ClientKeepAlive clientKeepAlive = new ClientKeepAlive();
+            // clientKeepAlive.start();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -155,7 +155,6 @@ public class ChatClient {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                // in.close();
             }
         }
     }
