@@ -1,9 +1,9 @@
 #!/bin/bash
-
+HOSTNAME=`hostname -s`
 while :
   do
     clear
-    echo "CHAT-SVR-01 NETSTAT -naopt | grep 20111"
+    echo "$HOSTNAME NETSTAT -naopt | grep 20111"
     timestamp=`date +%Y/%m/%d,%H:%M:%S -d +9hour`
     echo "$timestamp KST"
 
